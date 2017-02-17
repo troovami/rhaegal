@@ -1,5 +1,7 @@
 @extends('layout')
-
+  @section('titulo')
+  {{$id->modelo->str_modelo}}
+  @endsection
   @section('content') 
 
 		<!-- RIGHT -->
@@ -9,7 +11,6 @@
 							
 								<!-- IMAGE -->
 								<div class="col-lg-6 col-sm-6">
-									
 									<div class="thumbnail relative margin-bottom-3">
 
 										<!-- 
@@ -17,54 +18,34 @@
 											
 											data-mode="mouseover|grab|click|toggle"
 										-->
-										<figure id="zoom-primary" class="zoom" data-mode="mouseover">
-											<!-- 
-												zoom buttton
-												
-												positions available:
-													.bottom-right
-													.bottom-left
-													.top-right
-													.top-left
-											-->
-											<a class="lightbox bottom-right" href="{{ url ('assets/images/demo/shop/products/1000x1500/p5.jpg')}}" data-plugin-options='{"type":"image"}'><i class="glyphicon glyphicon-search"></i></a>
+										<figure id="zoom-primary" width="15" height="18" class="zoom" data-mode="mouseover">
+											
 
-											<!-- 
-												image 
-												
-												Extra: add .image-bw class to force black and white!
-											-->
-											<img class="img-responsive" src="{{ url ('assets/images/demo/shop/products/1000x1500/p5.jpg') }}" width="1200" height="1500" alt="This is the product title" />
+											<img class="img-responsive" style="width: 400; height: 450" src="{{ url ('imagenes/1000x1500/1.jpg')}}"   alt="This is the product title" />
 										</figure>
 
 									</div>
 
 									<!-- Thumbnails (required height:100px) -->
 									<div data-for="zoom-primary" class="zoom-more owl-carousel owl-padding-3 featured" data-plugin-options='{"singleItem": false, "autoPlay": false, "navigation": true, "pagination": false}'>
-										<a class="thumbnail active" href="{{ url ('assets/images/demo/shop/products/1000x1500/p5.jpg')}}">
-											<img src="{{ url ('assets/images/demo/shop/products/100x100/p5.jpg')}}" height="100" alt="" />
+										<a class="thumbnail active" href="{{ url ('imagenes/1000x1500/1.jpg')}}">
+											<img src="{{ url ('imagenes/100x100/1.jpg')}}" height="100" alt="" />
 										</a>
-										<a class="thumbnail" href="{{ url ('assets/images/demo/shop/products/1000x1500/p6.jpg')}}">
-											<img src="{{ url ('assets/images/demo/shop/products/100x100/p6.jpg')}}" height="100" alt="" />
+										<a class="thumbnail" href="{{ url ('imagenes/1000x1500/2.png')}}">
+											<img src="{{ url ('imagenes/100x100/2.png')}}" height="100" alt="" />
 										</a>
-										<a class="thumbnail" href="{{ url ('assets/images/demo/shop/products/1000x1500/p7.jpg')}}">
-											<img src="{{ url ('assets/images/demo/shop/products/100x100/p7.jpg')}}" height="100" alt="" />
+										<a class="thumbnail" href="{{ url ('imagenes/3.jpg')}}">
+											<img src="{{ url ('imagenes/100x100/3.jpg')}}" height="100" alt="" />
 										</a>
-										<a class="thumbnail" href="{{ url ('assets/images/demo/shop/products/1000x1500/p8.jpg')}}">
-											<img src="{{ url ('assets/images/demo/shop/products/100x100/p8.jpg')}}" height="100" alt="" />
+										<a class="thumbnail" href="{{ url ('imagenes/4.jpg')}}">
+											<img src="{{ url ('imagenes/100x100/4.jpg')}}" height="100" alt="" />
 										</a>
-										<a class="thumbnail" href="{{ url ('assets/images/demo/shop/products/1000x1500/p9.jpg')}}">
-											<img src="{{ url ('assets/images/demo/shop/products/100x100/p9.jpg')}}" height="100" alt="" />
-										</a>
-										<a class="thumbnail" href="{{ url ('assets/images/demo/shop/products/1000x1500/p10.jpg')}}">
-											<img src="{{ url ('assets/images/demo/shop/products/100x100/p10.jpg')}}" height="100" alt="" />
-										</a>
-										<a class="thumbnail" href="{{ url ('assets/images/demo/shop/products/1000x1500/p11.jpg')}}">
-											<img src="{{ url ('assets/images/demo/shop/products/100x100/p11.jpg')}}" height="100" alt="" />
+										<a class="thumbnail" href="{{ url ('imagenes/5.jpg')}}">
+											<img src="{{ url ('imagenes/100x100/5.jpg')}}" height="100" alt="" />
 										</a>
 									</div>
 									<!-- /Thumbnails -->
-
+								
 								</div>
 								<!-- /IMAGE -->
 
@@ -74,18 +55,20 @@
 									<!-- buttons -->
 									<div class="pull-right">
 										<!-- replace data-item-id width the real item ID - used by js/view/demo.shop.js -->
-										<a class="btn btn-default add-wishlist" href="#" data-item-id="1" data-toggle="tooltip" title="Favorito"><i class="fa fa-heart nopadding"></i></a>
-										<a class="btn btn-default add-compare" href="#" data-item-id="1" data-toggle="tooltip" title="Agregar a comparar"><i class="fa fa-retweet" data-toggle="tooltip"></i></a>
+										
+										<a class="btn btn-default" style="font-size:12;color: #827f7f;"  href="{{route('modelos.detalles',$id->id)}}" data-item-id="1" data-toggle="tooltip">COMPARAR</a>
 									</div>
 									<!-- /buttons -->
-
-									<!-- price -->
+								
+									
 									<div class="shop-item-price">
-										Precio: {{$id->precio[0]->dbl_precio}}
+										<a href="{{route ('modelos.precio', $id->id )}}" class="btn btn-3d btn-xs btn-reveal btn-yellow">
+											<i class="fa fa-money"></i>
+											<span>VER PRECIOS</span>
+										</a> 
 										
 									</div>
-									<!-- /price -->
-
+									
 									<hr />
 
 									<div class="clearfix margin-bottom-30">
@@ -95,14 +78,28 @@
 										-->
 										<strong>MARCA:</strong> {{$id->modelo->marca->str_marca}} <br>
 										<strong>MODELO:</strong> {{$id->modelo->str_modelo}} <br>
-										<strong>VERSION:</strong> {{$id->str_version}} 
+										<strong>VERSION:</strong> {{$id->str_version}}  
 										
 									</div>
 
+								<!-- Favorito -->
+						@if(isset(Auth::user()->id))
+							@if (count($lng_idfavorito)>0)
+ 		
+			                       <div id="fav_pub{{$id->id}}">
+			                            <a class="btn btn-default" href="#" onclick="fav_eliminar({{ $id->id }})" data-item-id="{{ $id->id }}" title="Quitar de favoritos" data-toggle="tooltip"><i style="color: red" class="fa fa-heart nopadding"></i></a>
 
-									<!-- short description -->
-									<p>{{$detalles->str_detalle}}.</p>
-									<!-- /short description -->
+			                        </div>
+	                                     		
+	                         @else
+
+	                                            	
+	                        <div id="fav_pub{{$id->id}}">
+	                          <a class="btn btn-default" href="#" onclick="fav({{ $id->id }})" title="Añadir a favoritos" data-item-id="{{ $id->id }}" data-toggle="tooltip"><i class="fa fa-heart nopadding"></i></a>
+	                        </div>
+	                                          	
+	                        @endif
+                        @endif
 
 									<hr />
 
@@ -161,23 +158,48 @@
 									<h2 class="panel-title">Ficha tecnica</h2>
 								</div>
 								<div class="nopadding panel-body">
-								<table class="table nomargin">
-										<tbody>
-										<?php $i='0'; ?>
-										@foreach ($detalles->valores_especificacion as $detalles)
+								<table class="table nomargin table-condensed">
+									<tbody>
+									<?php $j='0'; $h='0'; ?>
+										<tr>
+											<th style="color:black" ><span>Operadoras</th>
+											
+											@foreach($red as $operadora)
+												@if ($j==$operadora->str_operadora)
+												<td></td>
+												@else
+												<?php $j=$operadora->str_operadora ?>
+												<td>{{$operadora->str_operadora}}</td>
+												@endif
+												{{$operadora->str_especificaciones}}</td>
+												{{$operadora->str_frecuecia}}
+											</tr>
 											<tr>
-												@if ($detalles->especificacion->str_descripcion==$i)
+												<td></td>
+											@endforeach
+											
+										</tr>
+											
+
+
+										<?php $i='0'; $k='0';?>
+										@foreach ($id->valores_especificacion as $detalles)
+											<tr>
+												@if ($detalles->especificacion->str_especificacion==$i)
 												
 												<th style="color:black" ></th>
 												@else
-												<?php $i=$detalles->especificacion->str_descripcion; ?>
+												<?php $i=$detalles->especificacion->str_especificacion; ?>
 												<th style="color:black" ><span>{{$detalles->especificacion->
-												str_descripcion}}</span></th>
+												str_especificacion}}</span></th>
 												@endif
-
-												<th><span>{{$detalles->especificacion->str_especificacion}}</span></th>
-
-												<td>{{$detalles->str_titulo}}</td>
+												@if ($detalles->str_titulo==$k)
+												<th style="color:black" ></th>
+												@else
+												<?php $k=$detalles->str_titulo ?>
+												<th><span>{{$detalles->str_titulo}}</span></th>
+												@endif
+												<td colspan="2">{{$detalles->str_descripcion}}</td>
 											</tr>
 
 										@endforeach
@@ -195,18 +217,19 @@
 							<div class="owl-carousel featured nomargin owl-padding-10" data-plugin-options='{"singleItem": false, "items": "4", "stopOnHover":false, "autoPlay":4500, "autoHeight": false, "navigation": true, "pagination": false}'>
 
 								<!-- item -->
+								@foreach ($similares as $similitud)
 								<div class="shop-item nomargin">
 
 									<div class="thumbnail">
 										<!-- product image(s) -->
 										<a class="shop-item-image" href="shop-single-left.html">
-											<img class="img-responsive" src="{{ url ('assets/images/demo/shop/products/300x450/p7.jpg')}}" alt="shop first image" />
+											<img class="img-responsive" src="{{ url ('img/modelo_3.jpg')}}" alt="shop first image" />
 										</a>
 										<!-- /product image(s) -->
 									</div>
 									
 									<div class="shop-item-summary text-center">
-										<h2>Town Dress - Black</h2>
+										<h2>{{$similitud->str_modelo}}</h2>
 										
 										<!-- rating -->
 										<div class="shop-item-rating-line">
@@ -214,11 +237,6 @@
 										</div>
 										<!-- /rating -->
 
-										<!-- price -->
-										<div class="shop-item-price">
-											$154.00
-										</div>
-										<!-- /price -->
 									</div>
 
 										<!-- buttons -->
@@ -228,165 +246,14 @@
 										<!-- /buttons -->
 								</div>
 								<!-- /item -->
-
+								@endforeach
 							</div>
 
 						</div>
 
-
-						<!-- LEFT -->
 						<div class="col-lg-3 col-md-3 col-sm-3">
 
-							<!-- CATEGORIES -->
-							<div class="side-nav margin-bottom-60">
-
-								<div class="side-nav-head">
-									<button class="fa fa-bars"></button>
-									<h4>CATEGORIAS</h4>
-								</div>
-
-								<ul class="list-group list-group-bordered list-group-noicon uppercase">
-									<li class="list-group-item">
-										<a class="" href="#">Móviles</a>
-									</li>
-									<li class="list-group-item">
-										<a class="" href="#">Tablet</a>
-									</li>
-									<li class="list-group-item">
-										<a class="" href="#">Smartwatch</a>
-									</li>
-								</ul>
-
-							</div>
-							<!-- /CATEGORIES -->
-
-
-							<!-- BANNER ROTATOR -->
-							<div class="owl-carousel buttons-autohide controlls-over margin-bottom-60 text-center" data-plugin-options='{"singleItem": true, "autoPlay": 4000, "navigation": true, "pagination": false, "transitionStyle":"fadeUp"}'>
-								<a href="#">
-									<img class="img-responsive" src="{{ url ('assets/images/demo/shop/banners/off_1.png')}}" width="270" height="350" alt="">
-								</a>
-								<a href="#">
-									<img class="img-responsive" src="{{ url ('assets/images/demo/shop/banners/off_2.png')}}" width="270" height="350" alt="">
-								</a>
-							</div>
-							<!-- /BANNER ROTATOR -->
-
-
-							<!-- FEATURED -->
-							<div class="margin-bottom-60">
-
-								<h2 class="owl-featured">FEATURED</h2>
-								<div class="owl-carousel featured" data-plugin-options='{"singleItem": true, "stopOnHover":false, "autoPlay":false, "autoHeight": false, "navigation": true, "pagination": false}'>
-									
-									<div><!-- SLIDE 1 -->
-										<ul class="list-unstyled nomargin nopadding text-left">
-
-											<li class="clearfix"><!-- item -->
-												<div class="thumbnail featured clearfix pull-left">
-													<a href="#">
-														<img src="{{ url ('assets/images/demo/shop/products/100x100/p10.jpg')}}" width="80" height="80" alt="featured item">
-													</a>
-												</div>
-
-												<a class="block size-12" href="#">Long Grey Dress - Special</a>
-												<div class="rating rating-4 size-13 width-100 text-left"><!-- rating-0 ... rating-5 --></div>
-												<div class="size-18 text-left">$132.00</div>
-											</li><!-- /item -->
-
-											<li class="clearfix"><!-- item -->
-												<div class="thumbnail featured clearfix pull-left">
-													<a href="#">
-														<img src="{{ url ('assets/images/demo/shop/products/100x100/p2.jpg')}}" width="80" height="80" alt="featured item">
-													</a>
-												</div>
-
-												<a class="block size-1" href="#">Black Fashion Hat</a>
-												<div class="rating rating-4 size-13 width-100 text-left"><!-- rating-0 ... rating-5 --></div>
-												<div class="size-18 text-left">$65.00</div>
-											</li><!-- /item -->
-
-											<li class="clearfix"><!-- item -->
-												<div class="thumbnail featured clearfix pull-left">
-													<a href="#">
-														<img src="{{ url ('assets/images/demo/shop/products/100x100/p13.jpg')}}" width="80" height="80" alt="featured item">
-													</a>
-												</div>
-
-												<a class="block size-1" href="#">Cotton 100% - Pink Dress</a>
-												<div class="rating rating-4 size-13 width-100 text-left"><!-- rating-0 ... rating-5 --></div>
-												<div class="size-18 text-left">$77.00</div>
-											</li><!-- /item -->
-
-										</ul>
-									</div><!-- /SLIDE 1 -->
-
-									<div><!-- SLIDE 2 -->
-										<ul class="list-unstyled nomargin nopadding text-left">
-
-											<li class="clearfix"><!-- item -->
-												<div class="thumbnail featured clearfix pull-left">
-													<a href="#">
-														<img src="{{ url ('assets/images/demo/shop/products/100x100/p12.jpg')}}" width="80" height="80" alt="featured item">
-													</a>
-												</div>
-
-												<a class="block size-12" href="#">Long Grey Dress - Special</a>
-												<div class="rating rating-4 size-13 width-100 text-left"><!-- rating-0 ... rating-5 --></div>
-												<div class="size-18 text-left">$132.00</div>
-											</li><!-- /item -->
-
-											<li class="clearfix"><!-- item -->
-												<div class="thumbnail featured clearfix pull-left">
-													<a href="#">
-														<img src="{{ url ('assets/images/demo/shop/products/100x100/p6.jpg')}}" width="80" height="80" alt="featured item">
-													</a>
-												</div>
-
-												<a class="block size-1" href="#">Black Fashion Hat</a>
-												<div class="rating rating-4 size-13 width-100 text-left"><!-- rating-0 ... rating-5 --></div>
-												<div class="size-18 text-left">$65.00</div>
-											</li><!-- /item -->
-
-											<li class="clearfix"><!-- item -->
-												<div class="thumbnail featured clearfix pull-left">
-													<a href="#">
-														<img src="{{ url ('assets/images/demo/shop/products/100x100/p14.jpg')}}" width="80" height="80" alt="featured item">
-													</a>
-												</div>
-
-												<a class="block size-1" href="#">Cotton 100% - Pink Dress</a>
-												<div class="rating rating-4 size-13 width-100 text-left"><!-- rating-0 ... rating-5 --></div>
-												<div class="size-18 text-left">$77.00</div>
-											</li><!-- /item -->
-
-										</ul>
-									</div><!-- /SLIDE 2 -->
-
-								</div>
-							
-							</div>
-							<!-- /FEATURED -->
-
-
-							<!-- HTML BLOCK -->
-							<div class="margin-bottom-60">
-								<h4>HTML BLOCK</h4>
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras non placerat mi. Etiam non tellus eunit.</p>
-
-								<form action="#" role="form" method="post">
-									<div class="input-group">
-										<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-										<input type="email" name="email" class="form-control" placeholder="Enter your Email" required="required">
-										<span class="input-group-btn">
-											<button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-send"></i></button>
-										</span>
-									</div>
-								</form>
-
-							</div>
-							<!-- /HTML BLOCK -->
-
+						@include('marca/publicidad_derecha')
 						</div>
 
 					</div>

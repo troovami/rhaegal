@@ -1,10 +1,11 @@
 	<head>
 		<meta charset="utf-8" />
-		<title>Trovami</title>
+		<title>Troovami</title>
 		<meta name="keywords" content="HTML5,CSS3,Template" />
 		<meta name="description" content="" />
 
 		<!-- mobile settings -->
+		<link rel="icon" href="{{ asset ('assets/images/logo_dark.png') }}" type="image/x-icon"/>
 		<meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0" />
 		<!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
 
@@ -12,36 +13,63 @@
 		
 		<!-- CORE CSS -->
 		<link href="{{ url ('assets/plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
-		
+		<link href="{{ url ('assets/font-awesome/4.2.0/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css" />
 		<!-- THEME CSS -->
 		<link href="{{ url ('assets/css/essentials.css') }}" rel="stylesheet" type="text/css" />
 		<link href="{{ url ('assets/css/layout.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ url ('jquery-ui.css') }}" rel="stylesheet" type="text/css" />
 
 		<!-- PAGE LEVEL SCRIPTS -->
 		<link href="{{ url ('assets/css/header-1.css') }}" rel="stylesheet" type="text/css" />
 		<link href="{{ url ('assets/css/layout-shop.css') }}" rel="stylesheet" type="text/css" />
 		<link href="{{ url ('assets/css/color_scheme/green.css') }}" rel="stylesheet" type="text/css" id="color_scheme" />
+		<link href="{{ url ('css/modal.css') }}" rel="stylesheet" type="text/css" id="color_scheme" />
+
+  <!-- Compiled and minified JavaScript -->
+
+	<div onload="myModal"></div>		
 	</head>
+<!-- The Modal -->
+<div id="myModal" class="modal_css">
+  <!-- Modal content -->
+  <br><br>
+  <div class="modal-contenido">
+   
+    <div class="modal-body_css" >
+    
+      @include('auth/login')
+    </div>
+  </div>
 
-
+</div>
 		<div id="topBar">
 				<div class="container">
 					<ul class="top-links list-inline pull-right">
-						<li class="text-welcome hidden-xs">Welcome to Smarty, <strong>John Doe</strong></li>
-						<li>
-							<a class="dropdown-toggle no-text-underline" data-toggle="dropdown" href="shop-4col-right.html#"><i class="fa fa-user hidden-xs"></i> MY ACCOUNT</a>
-							<ul class="dropdown-menu pull-right">
-								<li><a tabindex="-1" href="shop-4col-right.html#"><i class="fa fa-history"></i> ORDER HISTORY</a></li>
+						
+						@if (Auth::guest())
+						
+						<li class="hidden-xs" ><a class="ico-rounded lightbox" href="{{ route('Auth.ingreso')}}" id="myBtn" style="color:#fff"> Ingresa</a><li>
+
+						<li class="hidden-xs"><a href="{{ route('Auth.registrate')}}" style="color:#fff">Regístrate</a></li>
+					@else
+					<li class="text-welcome hidden-xs" style="color:#b7b4b4">Bienvenido a troovami, <strong>{{ Auth::user()->str_nombre }} {{Auth::user()->str_apellido}}</strong></li>
+						
+						<li class="dropdown">
+						
+							<a href="#" class="dropdown-toggle" style="color:#fff" data-toggle="dropdown" role="button" aria-expanded="false">Cuenta<span class="caret"></span></a>
+
+							<ul class="dropdown-menu" role="menu">
+								<li><a tabindex="-1" href="{{route ('favorito.favoritos', 'Datos')}}"><i class="fa fa-cog"></i> Mi Perfil</a></li>
+								
 								<li class="divider"></li>
-								<li><a tabindex="-1" href="shop-4col-right.html#"><i class="fa fa-bookmark"></i> MY WISHLIST</a></li>
-								<li><a tabindex="-1" href="shop-4col-right.html#"><i class="fa fa-edit"></i> MY REVIEWS</a></li>
-								<li><a tabindex="-1" href="shop-4col-right.html#"><i class="fa fa-cog"></i> MY SETTINGS</a></li>
+								<li><a tabindex="-1" href="{{ route('favorito.favoritos', 'Favoritos')}}"><i class="fa fa-heart"></i> Favoritos</a></li>
+								<li><a tabindex="-1" href="{{route ('favorito.favoritos')}}"><i class="fa fa-edit"></i> Mis Anuncios</a></li>
 								<li class="divider"></li>
-								<li><a tabindex="-1" href="shop-4col-right.html#"><i class="glyphicon glyphicon-off"></i> LOGOUT</a></li>
+								
+								<li><a tabindex="-1" href="{{ route('Auth.sesion')}}"><i class="glyphicon glyphicon-off"></i> Salir</a></li>
 							</ul>
 						</li>
-						<li class="hidden-xs"><a href="page-login-1.html">LOGIN</a></li>
-						<li class="hidden-xs"><a href="page-register-1.html">REGISTER</a></li>
+					@endif
 					</ul>
 				</div>
 			</div>
@@ -51,7 +79,8 @@
 				<!-- SEARCH HEADER -->
 				<div class="search-box over-header">
 					<a id="closeSearch"  class="glyphicon glyphicon-remove"></a>
-					{!! Form::open(array('route' => 'modelos.busqueda', 'method'=>'get')) !!}
+					{!! Form::open(array('route' => 'modelos.busqueda', 'method'=>'GET')) !!}
+					 {{ csrf_field() }}
 						{!! Form::text ('busqueda', null, ['class'=>'form-control','placeholder'=>'Buscar Modelo'])!!}
 					
 					{!! Form::close() !!}
@@ -60,7 +89,7 @@
 
 
 				<!-- TOP NAV -->
-				<header id="topNav">
+				<header id="topNav" style="background: #f3f3f3" >
 					<div class="container">
 
 						<!-- Mobile Menu Button -->
@@ -104,8 +133,8 @@
 														<div class="col-md-5th">
 															<ul class="list-unstyled">
 															<?php $i=0; ?>
-																@foreach ($menu as $menu)
-																<li><a href="{{ route('marcas.moviles', $menu[0]->marca->id)}}">{{$menu[0]->marca->str_marca}}</a></li>
+																@foreach ($menu as $menus)
+																<li><a href="{{ route('marcas.moviles', $menus->marca->id)}}">{{$menus->marca->str_marca}}</a></li>
 																<?php $i=$i+1; ?>
 																@if ($i==9 or $i==18 or $i==27 or $i==36 or $i==45 or $i==54 or $i==63 or $i==72 or $i==81 or $i==90)
 																</ul>
@@ -122,6 +151,11 @@
 											</ul>
 										</li>
 										<li class="dropdown mega-menu"><!-- SHORTCODES -->
+											<a href="{{ route('modelos.detalles') }}">
+												COMPARAR
+											</a>
+										</li>
+										<li class="dropdown mega-menu"><!-- SHORTCODES -->
 											<a href="{{ route('marcas.somos') }}">
 												QUIENES SOMOS
 											</a>
@@ -132,19 +166,16 @@
 						</div>
 						</header>
 					</div>
-				
-			
-			@if (isset ($id) and $id!='{id}')
+
 			<section class="page-header page-header-xs">
 				<div class="container">
-				@if (isset($id->modelo))
-				<h1>{{$id->modelo->str_modelo}}</h1>
-				@else
-					<h1>{{$id->str_marca}}</h1>
-				@endif
+				
+				<h1>@yield('titulo')</h1>
+			
 				</div>
 			</section>
-			@endif
+		
+
 
 			<!-- CONTENT -->
 			<section>
@@ -154,7 +185,7 @@
 			</section>
 			<!-- CONTENT -->
 
-
+</body>
 
 
 			<!-- FOOTER -->
@@ -162,19 +193,15 @@
 				<div class="copyright">
 					<div class="container">
 							<div class="clearfix">
-								<a href="#" class="pull-left social-icon social-icon-round social-facebook" data-toggle="tooltip" data-placement="top" title="Facebook">
+								<a href="https://www.facebook.com/Troovami-1566517207012420/" class="pull-left social-icon social-icon-round social-facebook" data-toggle="tooltip" data-placement="top" title="Facebook">
 									<i class="icon-facebook"></i>
 									<i class="icon-facebook"></i>
 								</a>
-								<a href="#" class="pull-left social-icon social-icon-round social-gplus" data-toggle="tooltip" data-placement="top" title="Google+">
-									<i class="icon-gplus"></i>
-									<i class="icon-gplus"></i>
-								</a>
-								<a href="#" class="pull-left social-icon social-icon-round social-twitter" data-toggle="tooltip" data-placement="top" title="Twitter">
+								<a href="https://twitter.com/troovami" class="pull-left social-icon social-icon-round social-twitter" data-toggle="tooltip" data-placement="top" title="Twitter">
 									<i class="icon-twitter"></i>
 									<i class="icon-twitter"></i>
 								</a>
-								<a href="#" class="pull-left social-icon social-icon-round social-instagram" data-toggle="tooltip" data-placement="top" title="Instagram">
+								<a href="https://www.instagram.com/troovami/?ref=badge" class="pull-left social-icon social-icon-round social-instagram" data-toggle="tooltip" data-placement="top" title="Instagram">
 									<i class="icon-instagram"></i>
 									<i class="icon-instagram"></i>
 								</a>
@@ -182,12 +209,12 @@
 							</div>
 
 						<ul class="pull-right nomargin list-inline mobile-block">
-							<li><a href="shop-4col-right.html#">Terms &amp; Conditions</a></li>
+							<li><a href="#">Terminos y Condiciones</a></li>
 							<li>&bull;</li>
-							<li><a href="shop-4col-right.html#">Privacy</a></li>
+							<li><a href="#">Privacidad</a></li>
 						</ul>
 
-						&copy; All Rights Reserved, Company LTD
+						&copy; 2017 troovami.com
 					</div>
 				</div>
 
@@ -212,47 +239,105 @@
 		<script type="text/javascript" src="{{ url ('assets/plugins/jquery/jquery-2.1.4.min.js') }}"></script>
 		<script type="text/javascript" src="{{ url ('assets/js/scripts.js') }}"></script>
 		
+			
+
+
 
 		<!-- PAGE LEVEL SCRIPTS -->
 		<script type="text/javascript" src="{{ url ('assets/js/view/demo.shop.js') }}"></script>
 		<script type="text/javascript" src="{{ url ('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url ('js/jquery-ui.js') }}"></script>
+		<script type="text/javascript" src="{{ url ('js/jquery-ui.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url ('js/functions.js') }}"></script>
+		<script type="text/javascript" src="{{ url ('js/jquery.maskedinput.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url ('js/modal.js') }}"></script>
+		<script type="text/javascript" src="{{ url ('js/favorito.js') }}"></script>
+
 		<script type="text/javascript" src="{{ url ('assets/plugins/smoothscroll.js') }}"></script>
 		<script type="text/javascript" src="{{ url ('assets/plugins/owl-carousel/owl.carousel.min.js') }}"></script>
 		<script type="text/javascript" src="{{ url ('assets/plugins/countdown/jquery.countdown.pack.min.js') }}"></script>
+
 		
 		
 	 <script>
-		
-			 $("#combo").click(function(){
+	$('.input-mask-date').mask('99/99/9999');
+	$('.input-mask-phone').mask('(999) 999-9999');
 
-				 $.get(document.getElementById("combo").value, function(data){
-            		$("#pruebas").html(data);
-        										});
-										 });
-
-
-			 $(".comparar").click(function(){
+			/* $(".comparar").click(function(){
 			 	var item_id = jQuery(this).attr('data-item-id');
-			 
+
 			 		$('#btn_comparar').attr('disabled', false);
 
 			 			var calcular=document.getElementById('lista_producto').value;
-						var calcular=calcular.split(",");
-						var calcular=calcular.length;
+						var calcular_medida=calcular.split(",");
+						var calcular=calcular_medida.length;
+						
+						if (calcular==3){
+							calcular_medida[2]=item_id;
+						}
+						if(calcular==1){
+							calcular_medida[0]=item_id;
+						}
+						if(calcular==2){
+							calcular_medida[1]=item_id;
+						}
+						if (calcular==2 || calcular==3){
+							if((calcular_medida[0]== calcular_medida[1]) || 
+							   (calcular_medida[1]== calcular_medida[2]) || 
+							   (calcular_medida[2]== calcular_medida[0]))
+							{
+								$('#alerta').attr('hidden', false);
+								var mensaje='No se permite comparar el mismo modelo';
+								document.getElementById('informacion').innerHTML=mensaje;
+								return;
+							}
+						}
 						if (calcular<4){
+
 						document.getElementById('count').innerHTML=calcular;
 						document.getElementById('lista_producto').value = item_id + ','+ document.getElementById('lista_producto').value;
+						$("#comparar"+item_id).css({'color':'#eee','font-size':'1.3em','background':'#328AE0'});
 						}
 						if (calcular >3){
 								$('#alerta').attr('hidden', false);
 								var mensaje='Puede comparar hasta 3 teléfonos a la vez';
-								document.getElementById('prueba').innerHTML=mensaje;
-							//alert('Puede comparar hasta 3 teléfonos a la vez.');
+								document.getElementById('informacion').innerHTML=mensaje;
+								
 						}
+			 		
+				});*/
+				
+			  $("#cerrar").click(function(){
+			  	$('#alerta').attr('hidden', true);
+			  	});
 
-			 		$('#lista_producto').attr('disabled', false);
-				});
-										 
+	function archivo(evt) {
+      var files = evt.target.files; // FileList object
+        //Obtenemos la imagen del campo "file". 
+      for (var i = 0, f; f = files[i]; i++) {         
+           //Solo admitimos imágenes.
+           if (!f.type.match('image.*')) {
+                continue;
+           }
+      
+         var reader = new FileReader();
+           
+         reader.onload = (function(theFile) {
+          return function(e) {
+         // Creamos la imagen.
+           document.getElementById("list").innerHTML = ['<img class="thumb" name="blb_img"  style="width:340;height: 290" src="', e.target.result,'" title="', escape(theFile.name), '"/>'].join('');
+           };
+         })(f);
+          reader.readAsDataURL(f);
+       }
+   	 var obj = document.getElementById('otro');
+		obj.style.height = "0";
+		obj.style.width = "0";
+       document.getElementById("otro").style.visibility="hidden";
+	}
+             
+      document.getElementById('files').addEventListener('change', archivo, false);
+								 
 
 
 

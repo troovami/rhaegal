@@ -1,14 +1,9 @@
 @extends('layout')
-
+  @section('titulo')
+ QUIENES SOMOS
+  @endsection
   @section('content') 
-   <section class="page-header page-header-xs">
-				<div class="container">
 
-					<h1>QUIENES SOMOS</h1>
-
-				</div>
-			</section>
-			<br>
 
 <div class="row">
 	<div class="blog-post-item col-md-12 col-sm-12">

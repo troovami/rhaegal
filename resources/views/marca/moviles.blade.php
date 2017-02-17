@@ -1,5 +1,7 @@
 @extends('layout')
-
+  @section('titulo')
+  {{$id->str_marca}}
+  @endsection 
   @section('content') 
 
         @if($id=='{id}')
@@ -59,6 +61,7 @@
 
 
 							<!-- LIST OPTIONS -->
+							<div id="pruebas">
 							<div class="clearfix shop-list-options margin-bottom-20">
 
 								<ul class="pagination nomargin pull-right">
@@ -69,40 +72,31 @@
 								</ul>
 
 								<div class="options-left">
-								
-									<select>
-										<option id="combo" value="{{ route('marcas.prueba',$id->id.'/desc/str_modelo')}}">Nombre: de Z a A</option>
-										<option id="combo" value="{{ route('marcas.prueba',$id->id.'/asc/str_modelo')}}">Nombre: de A a Z</option>
-										<option id="combo" value="{{ route('marcas.prueba',$id->id.'/asc/dbl_precio')}}">Ordenar por menor precio</option>
-										<option value="{{ route('marcas.prueba',$id->id.'/desc/dbl_precio')}}">Ordenar por mayor precio</option>
+								{!! Form::open(array('route' => 'modelos.autocomplet', 'method' => 'post') )!!}
+									<select id="combo" onclick="myFunction()">
+										<option id="combo"  value="{{$id->id}}/asc/str_modelo">Nombre: de A a Z</option>
+										<option id="combo" value="{{$id->id}}/desc/str_modelo">Nombre: de Z a A</option>
 									</select>
-									
+									<input type="hidden" name="_token" value="{{csrf_token()}}" id="token">
 									<a class="btn active fa fa-th"><!-- grid --></a>
-								
+								{!! Form::close() !!}
 								</div>
 							</div>
 							<hr />
 							<div class="alert alert-danger margin-bottom-30" id="alerta" hidden>
-								<button type="button" class="close" data-dismiss="alert">
-									<span aria-hidden="true">×</span>
-									<span class="sr-only">Close</span>
+								<button type="button" id="cerrar" class="col-md-12 text-right">
+									<span>X</span>
 								</button>
-								<strong id="prueba"></strong>
-							</div>
+								<span id="informacion"></span>
 
-							<div class="clearfix shop-list-options margin-bottom-20">
-								<ul class="pagination nomargin pull-right">
-								<input type="hidden" name="compare_product_list" id="lista_producto" value="">
-								<button type="button" class="btn btn-primary btn-3d" id="btn_comparar" disabled >Comparar (<span id='count'>0</span>)</button>
-								</ul>
-								
 							</div>
-
+							 
 							<!-- /LIST OPTIONS -->
-							<div id="pruebas">
+							
 							<ul class="shop-item-list row list-inline nomargin">
 							@foreach ($marcas as $item)
 							@foreach ($item->version as $version)
+							
 								<li class="col-lg-3 col-sm-3">
 
 
@@ -113,7 +107,7 @@
 										<a class="shop-item-image" href="{{ route('modelos.index', $version->id)}}">
 												<!-- IMagen CAROUSEL -->
 												<div class="owl-carousel buttons-autohide controlls-over nomargin" data-plugin-options='{"singleItem": true, "autoPlay": 3500, "navigation": false, "pagination": false, "transitionStyle":"fadeUp"}'>
-													<img class="img-responsive" src="{{ url ('Imagen-no-disponible-282x300.png') }}" alt="">
+													<img class="img-responsive"  width='80' height='80' src="{{ url ('img/modelo_3.jpg')}}" alt="">
 												</div>
 												<!-- /CAROUSEL -->
 											</a>
@@ -121,9 +115,26 @@
 
 											<!-- carrito -->
 											<div class="shop-option-over"><!-- replace data-item-id width the real item ID - used by js/view/demo.shop.js -->
-												<a class="btn btn-default add-wishlist" href="#" data-item-id="9" data-toggle="tooltip" title="Favoritos"><i class="fa fa-heart nopadding"></i></a>
+						@if(isset(Auth::user()->id))
+						<?php $favo=0; ?>
+							@foreach ($version->favorito as $fav)
+								@if($fav->usuario_social->lng_idpersona == Auth::user()->id)
+									<?php $favo=1; break; ?>
+								@endif
+							@endforeach
+								 @if ($favo==1)   		
+			                       <div id="fav_pub{{$version->id}}">
+			                            <a class="btn btn-default add-wishlist" href="#" onclick="fav_eliminar({{ $version->id }})" data-item-id="{{ $version->id }}" title="Quitar de favoritos" data-toggle="tooltip"><i style="color: red" class="fa fa-heart nopadding"></i></a>
 
-												<a class="btn btn-default comparar" data-item-id="{{$version->id}}" title="Agregar a comparar"><i class="fa fa-retweet" data-toggle="tooltip"></i></a>
+			                        </div>
+	                             @else  
+	                             	 <div id="fav_pub{{$version->id}}">
+	                          		<a class="btn btn-default add-wishlist" href="#" onclick="fav({{ $version->id}})" title="Añadir a favoritos" data-item-id="{{ $version->id }}" data-toggle="tooltip"><i class="fa fa-heart nopadding"></i></a>
+	                       			 </div>  
+	                       		 @endif   
+	                      @endif        		
+	
+				
 											</div>
 											<!--end carrito-->
 										</div>
@@ -140,11 +151,6 @@
 											</div>
 											<!-- /estrellas rating -->
 
-											<!-- price -->
-											<div class="shop-item-price">
-												{{$version->precio[0]->dbl_precio}}
-											</div>
-											<!-- /price -->
 										</div>
 
 											<!-- buttons -->

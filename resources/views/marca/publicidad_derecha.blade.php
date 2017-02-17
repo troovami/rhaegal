@@ -23,27 +23,20 @@
 							<!-- COLOR -->
 							<div class="margin-bottom-60">
 								<h4>COLOR</h4>
-								
-								<a class="tag shop-color" href="#" style="background-color:#000000"></a>
-								<a class="tag shop-color" href="#" style="background-color:#FFFFFF"></a>
-								<a class="tag shop-color" href="#" style="background-color:#C0C0C0"></a>
-								<a class="tag shop-color" href="#" style="background-color:#0000E0"></a>
-								<a class="tag shop-color" href="#" style="background-color:#FF0000"></a>
-								<a class="tag shop-color" href="#" style="background-color:#FF0080"></a>
-								<a class="tag shop-color" href="#" style="background-color:#FF6600"></a>
-								<a class="tag shop-color" href="#" style="background-color:#E0DCC8"></a>
-								<a class="tag shop-color" href="#" style="background-color:#F0E68C"></a>
-								<a class="tag shop-color" href="#" style="background-color:#4B0082"></a>
-								<a class="tag shop-color" href="#" style="background-color:#00FF00"></a>
-								<a class="tag shop-color" href="#" style="background-color:#0088CC"></a>
-								<a class="tag shop-color" href="#" style="background-color:#B38B6D"></a>
+								@foreach ($color as $colors)
+								<a class="tag shop-color" href="{{ route('modelos.colores', $colors->str_descripcion)}}" style="background-color:{{ $colors->str_caracteristica }}" title="{{ $colors->str_descripcion }}"></a>
+		
+								@endforeach
 
 								<hr />
-
+								@if(isset($dimension_color))
+								@foreach ($dimension_color as $item)
 								<div class="clearfix size-12">
-									<a class="pull-right glyphicon glyphicon-remove" href="#"></a>
-									SELECTED COLOR: <strong>Red</strong>
+									<a class="pull-right" href="#"></a>
+									COLOR SELECCIONADO: <span>{{$item->str_titulo}}</span>
 								</div>
+									@endforeach
+								@endif
 							</div>
 							<!-- /COLOR -->
 
@@ -59,100 +52,43 @@
 							<!-- /BANNER ROTATOR -->
 
 
-							<!-- FEATURED -->
+							<!-- mas vendido -->
+							@if(isset($relevante))
 							<div class="margin-bottom-60">
 
 								<h2 class="owl-featured">LOS MÁS VENDIDOS</h2>
 								<div class="owl-carousel featured" data-plugin-options='{"singleItem": true, "stopOnHover":false, "autoPlay":false, "autoHeight": false, "navigation": true, "pagination": false}'>
 									
-									<div><!-- SLIDE 1 -->
+									<div><!-- imagenes de mas vendido 1er0-->
 										<ul class="list-unstyled nomargin nopadding text-left">
-
+										<?php $i=1;?>
+											@foreach ($relevante as $vendido)
 											<li class="clearfix"><!-- item -->
 												<div class="thumbnail featured clearfix pull-left">
-													<a href="#">
-														<img src="{{ url ('assets/images/demo/shop/products/100x100/p10.jpg') }}" width="80" height="80" alt="featured item">
+													<a href="{{ route('modelos.mas_vendido', $vendido->version[0]->id)}}">
+														<img src="{{ url ('img/modelo_3.jpg')}}" width="80" height="80" alt="featured item">
 													</a>
 												</div>
 
-												<a class="block size-12" href="#">Long Grey Dress - Special</a>
+												<a class="block size-12" href="{{ route('modelos.mas_vendido', $vendido->version[0]->id)}}">{{$vendido->str_modelo}}</a>
 												<div class="rating rating-4 size-13 width-100 text-left"><!-- rating-0 ... rating-5 --></div>
-												<div class="size-18 text-left">$132.00</div>
+												<div class="size-18 text-left">Versión {{$vendido->version[0]->str_version}}</div>
 											</li><!-- /item -->
-
-											<li class="clearfix"><!-- item -->
-												<div class="thumbnail featured clearfix pull-left">
-													<a href="#">
-														<img src="{{ url ('assets/images/demo/shop/products/100x100/p2.jpg') }}" width="80" height="80" alt="featured item">
-													</a>
-												</div>
-
-												<a class="block size-1" href="#">Black Fashion Hat</a>
-												<div class="rating rating-4 size-13 width-100 text-left"><!-- rating-0 ... rating-5 --></div>
-												<div class="size-18 text-left">$65.00</div>
-											</li><!-- /item -->
-
-											<li class="clearfix"><!-- item -->
-												<div class="thumbnail featured clearfix pull-left">
-													<a href="#">
-														<img src="{{ url ('assets/images/demo/shop/products/100x100/p13.jpg') }}" width="80" height="80" alt="featured item">
-													</a>
-												</div>
-
-												<a class="block size-1" href="#">Cotton 100% - Pink Dress</a>
-												<div class="rating rating-4 size-13 width-100 text-left"><!-- rating-0 ... rating-5 --></div>
-												<div class="size-18 text-left">$77.00</div>
-											</li><!-- /item -->
-
-										</ul>
-									</div><!-- /SLIDE 1 -->
-
-									<div><!-- SLIDE 2 -->
+											@if($i==3)
+											</ul>
+										</div>
+										<div> <!-- imagenes de mas vendido 2do-->
 										<ul class="list-unstyled nomargin nopadding text-left">
-
-											<li class="clearfix"><!-- item -->
-												<div class="thumbnail featured clearfix pull-left">
-													<a href="#">
-														<img src="{{ url ('assets/images/demo/shop/products/100x100/p12.jpg') }}" width="80" height="80" alt="featured item">
-													</a>
-												</div>
-
-												<a class="block size-12" href="#">Long Grey Dress - Special</a>
-												<div class="rating rating-4 size-13 width-100 text-left"><!-- rating-0 ... rating-5 --></div>
-												<div class="size-18 text-left">$132.00</div>
-											</li><!-- /item -->
-
-											<li class="clearfix"><!-- item -->
-												<div class="thumbnail featured clearfix pull-left">
-													<a href="#">
-														<img src="{{ url ('assets/images/demo/shop/products/100x100/p6.jpg') }}" width="80" height="80" alt="featured item">
-													</a>
-												</div>
-
-												<a class="block size-1" href="#">Black Fashion Hat</a>
-												<div class="rating rating-4 size-13 width-100 text-left"><!-- rating-0 ... rating-5 --></div>
-												<div class="size-18 text-left">$65.00</div>
-											</li><!-- /item -->
-
-											<li class="clearfix"><!-- item -->
-												<div class="thumbnail featured clearfix pull-left">
-													<a href="#">
-														<img src="{{ url ('assets/images/demo/shop/products/100x100/p14.jpg') }}" width="80" height="80" alt="featured item">
-													</a>
-												</div>
-
-												<a class="block size-1" href="#">Cotton 100% - Pink Dress</a>
-												<div class="rating rating-4 size-13 width-100 text-left"><!-- rating-0 ... rating-5 --></div>
-												<div class="size-18 text-left">$77.00</div>
-											</li><!-- /item -->
-
+											@endif
+											<?php $i++; ?>
+											@endforeach
 										</ul>
-									</div><!-- /SLIDE 2 -->
+									</div>
 
 								</div>
-							
 							</div>
-							<!-- /FEATURED -->
+							@endif
+							<!-- /mas vendido -->
 
 
 							<!-- HTML BLOCK -->

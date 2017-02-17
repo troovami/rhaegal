@@ -106,6 +106,16 @@ section:before {
 	content:" ";
 	display:table;
 }
+img.alineadoTextoImagenArriba{
+  vertical-align: text-top;  
+}
+img.alineadoTextoImagenCentro{
+  vertical-align: middle;
+  /* Ojo vertical-align: text-middle no existe*/
+}
+img.alineadoTextoImagenAbajo{
+  vertical-align: text-bottom;  
+}
 
 section header.section-header {
 	margin-bottom:80px;
@@ -169,6 +179,7 @@ body.bg-grey #wrapper {
 }
 .container {
 	position:relative;
+	font-family: times new roman
 }
 
 a:active,
@@ -889,6 +900,7 @@ section.page-header {
 		
 	}
 	section.page-header.page-header-xs {
+	 background: #EBF3FC;
 		padding: 20px 0 20px 0;
 	}
 	section.page-header.page-header-md {
@@ -2655,7 +2667,8 @@ section.dark.page-header ul.page-options a {
 	*/
 	#topBar {
 		display:block;
-		background-color:#fff;
+		background-color:#333;
+		/*background-color:#fff;*/
 		border-bottom:rgba(0,0,0,0.05) 1px solid;
 	}
 	#topBar>.border-bottom {

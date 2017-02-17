@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Marca;
+
 use App\Models\Tipomarca;
 use App\Models\Versionesmodelo;
 class Modelo extends Model
@@ -26,7 +27,7 @@ class Modelo extends Model
         return $this->hasMany(Versionesmodelo::class,'lng_idmodelo','id');
     }
 
-
+  
 
     
 }

@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Modelo;
 use App\Models\Precio;
 use App\Models\Valoresespecificacion;
+use App\Models\Favorito;
+use App\Models\TecnOperadora;
+
 class Versionesmodelo extends Model
 {
 	 protected $table = 'tbl_versiones_modelos';
@@ -14,6 +17,10 @@ class Versionesmodelo extends Model
     {
         return $this->belongsTo(Modelo::class,'lng_idmodelo','id');
     }
+    public function tecnologia()
+    {
+    return $this->belongsToMany(TecnOperadora::class,'tbl_frecuencias_tecnos_versiones','lng_idversion_modelo','lng_frec_tecno_oper');
+    }    
 
      public function precio()
     {
@@ -21,6 +28,12 @@ class Versionesmodelo extends Model
     }
     public function valores_especificacion()
     {
-        return $this->belongsToMany('App\Models\Valoresespecificacion','tbl_versiones_valores_especificaciones','lng_idversion_modelo','lng_idvalores_especificaciones');
+        return $this->belongsToMany(Valoresespecificacion::class,'tbl_versiones_valores_especificaciones','lng_idversion_modelo','lng_idvalores_especificaciones');
     }
+       public function favorito()
+    {
+        return $this->hasMany(Favorito::class,'lng_idversionesmodelo','id');
+    }
+
+
 }

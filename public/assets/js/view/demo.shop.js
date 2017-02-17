@@ -17,11 +17,7 @@
 
 
 	
-		/* ******************* PHP URL TO POST *************** */
-		var URL_POST = 'php/view/demo.shop.php'; // CHANGE IT!
-		/* *************************************************** */
-
-
+		
 
 
 		/** ADD TO WISHLIST 
