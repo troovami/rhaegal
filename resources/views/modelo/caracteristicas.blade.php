@@ -151,36 +151,37 @@
 
 							</div>
 
-								<!-- REVIEWS -->
-								<!-- ficha tecnica -->
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h2 class="panel-title">Ficha tecnica</h2>
-								</div>
-								<div class="nopadding panel-body">
-								<table class="table nomargin table-condensed">
-									<tbody>
-									<?php $j='0'; $h='0'; ?>
-										<tr>
-											<th style="color:black" ><span>Operadoras</th>
-											
-											@foreach($red as $operadora)
-												@if ($j==$operadora->str_operadora)
-												<td></td>
-												@else
-												<?php $j=$operadora->str_operadora ?>
-												<td>{{$operadora->str_operadora}}</td>
-												@endif
-												{{$operadora->str_especificaciones}}</td>
-												{{$operadora->str_frecuecia}}
-											</tr>
-											<tr>
-												<td></td>
-											@endforeach
-											
-										</tr>
+
+<div class="toggle toggle-transparent-body" style="background:#ebf3fc">
+	@if (isset ($red))
+	<div class="toggle active">
+		<label><span>Operadoras</span></label>
+		<div class="toggle-content">
+			
+				<?php $j='0'; $h='0'; ?>
+						
+			@foreach($red as $operadora)
+			@if ($j==$operadora->str_operadora)
+			
+			@else
+			<?php $j=$operadora->str_operadora ?>
+				<br>{{$operadora->str_operadora}}
+			@endif
+				{{$operadora->str_especificaciones}}/{{$operadora->str_description}}
+				Frecuencia {{$operadora->str_frecuecia}}
+			
+			@endforeach
+			
 											
 
+		</div>
+	</div>
+	@endif
+	<div class="toggle">
+		<label>Ficha tecnica</label>
+		<div class="toggle-content">
+			<table class="table nomargin table-condensed">
+									<tbody>
 
 										<?php $i='0'; $k='0';?>
 										@foreach ($id->valores_especificacion as $detalles)
@@ -205,10 +206,13 @@
 										@endforeach
 										</tbody>
 									</table>
+		</div>
+	</div>
 
-															
-								</div>
-						</div>
+
+</div>
+
+
 						<!-- end ficha tecnica -->
 							<hr class="margin-top-80 margin-bottom-80" />
 

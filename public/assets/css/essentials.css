@@ -10046,7 +10046,7 @@ div.toggle.active > label:before {
 /* transparent body */
 .toggle.toggle-transparent .toggle-content,
 .toggle.toggle-transparent-body .toggle-content {
-	background:transparent;
+	background:#fff;
 }
 .toggle.toggle-transparent-body label {
 	background: rgba(0,0,0,0.03);

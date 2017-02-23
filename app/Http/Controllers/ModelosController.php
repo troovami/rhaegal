@@ -43,6 +43,7 @@ class ModelosController extends Controller
 
       $menu=$this->menu;
       $id=Versionesmodelo::find($id_version);
+      if (isset(\Auth::user()->id)){
       $red=Versionesmodelo::join('tbl_frecuencias_tecnos_versiones', 'tbl_versiones_modelos.id','=','tbl_frecuencias_tecnos_versiones.lng_idversion_modelo')->
       join('tbl_frecuencias_tecnos_operadoras','tbl_frecuencias_tecnos_versiones.lng_frec_tecno_oper','=','tbl_frecuencias_tecnos_operadoras.id')->
       join('cat_tecnologias_frecuencias','tbl_frecuencias_tecnos_operadoras.lng_idfrecuencia_tecnologia','=','cat_tecnologias_frecuencias.id')->
@@ -57,7 +58,7 @@ class ModelosController extends Controller
                 'cat_tecnologias.str_especificaciones',
                 'cat_frecuencias.str_frecuecia',
                 'cat_tecnologias.str_description')->get();
-
+      }
       $color=$this->color;
         // mas vendidos
       $relevante = $this->relevante;

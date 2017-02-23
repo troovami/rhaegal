@@ -92,7 +92,6 @@ class AuthController extends Controller
             'lng_idservicio' => 4,
             'dmt_fecha_nacimiento' => $fechas,
             'lng_idrol' => $data['lng_idrol'],
-             'blb_img' =>base64_encode(file_get_contents($data['blb_img'])),
             'password' => ($data['password']),
         ]);
     }
